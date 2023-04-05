@@ -22,10 +22,10 @@ class Client:
     def connection(self):
         try:
             self.client.connect((self.S_IP,self.S_PORT))
-            print(f"> SERVIDOR < CONEXÃO ACEITA EM {self.S_IP}:{self.S_PORT} \n PARA CONTINUAR PRECISAMOS QUE SE IDENTIFIQUE COM UM USERNAME")
+            print(f"> SERVIDOR < CONEXÃO ACEITA EM {self.S_IP}:{self.S_PORT} \n PARA CONTINUAR PRECISAMOS QUE SE IDENTIFIQUE COM UM USERNAME: ")
             self.username = input(">> USERNAME >> ")
         except:
-            print("SERVIDOR NÃO ENCONTRADO TENTE NOVAMENTE")
+            print("SERVIDOR NÃO ENCONTRADO TENTE NOVAMENTE OU ENTRE EM CONTATO COM O ADMINISTRADOR DO SERVIDOR.")
             self.getSrvInfo()
             
     def getMessage(self):
@@ -33,7 +33,6 @@ class Client:
             try:
                 Message = self.client.recv(2048).decode('ascii')
                 if Message == 'GETUSER':
-                    print("pegando usuarios")
                     self.client.send(self.username.encode('ascii'))
                 else:
                     print(Message)
@@ -43,7 +42,11 @@ class Client:
     
     def postMessage(self):
         while True:
-            self.client.send(input(">> ").encode('ascii'))
+            try:
+                Message = input("").encode('ascii')
+                self.client.send(Message)
+            except:
+                print("SUA MENSAGEM AINDA NÃO E ACEITA PELO SERVIDOR, TENTE NÃO USAR ACENTOS NO ENVIO.")
             
             
 if __name__ == '__main__':

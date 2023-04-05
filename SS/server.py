@@ -20,15 +20,14 @@ class Server:
         for client in self.clients:
             if(clientSender != self.usernames[self.clients.index(client)]):
                 client.send(Message.encode('ascii'))
-                print("SENDING BROADCAST")
+                print(clientSender + " ENVIANDO MENSAGEM PUBLICA")
     
     def LoadMessages(self, client):
         while True:
-            print("in loadmessage")
             try:
-                print("recebendo mensagem")
+                print("ESPERANDO MENSAGENS")
                 getMsgFromClient = client.recv(2048).decode('ascii')
-                CurrentUsername = self.usernames[self.clients.index(client)]                 
+                CurrentUsername = self.usernames[self.clients.index(client)]
                 self.Broadcast(f'> {self.usernames[self.clients.index(client)]} < {getMsgFromClient}',clientSender=CurrentUsername)
             except:
                 leftClientIndex = self.clients.index(client)
@@ -46,14 +45,15 @@ class Server:
             self.clients.append(client)
             client.send('GETUSER'.encode('ascii'))
             username = client.recv(2048).decode('ascii')
-            print("recebendo user")
+            print("ESPERANDO USERNAME")
             self.usernames.append(username)
+            print("NOVO USERNAME CADASTRADO "+username)
             self.Broadcast(f'> {username} < conectou-se ao chat')
-            print("iniciando thread")
+            print("INICIANDO THREADS PARA O CLIENT "+username)
             self.client_thread = threading.Thread(target=self.LoadMessages,args=(client,))
             self.client_thread.start()
         
 if __name__ == '__main__':
-    print("WELCOME TO LOCALCHAT [SERVER - SIDE]")
+    print("BEM VINDO TO LOCALCHAT [SERVER - SIDE]")
     I_HOST, I_PORT = input('HOST: '), int(input('PORT: '))
     new_Server = Server(I_HOST,I_PORT)
