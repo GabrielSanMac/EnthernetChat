@@ -19,14 +19,16 @@ class Server:
     def Broadcast(self, Message, clientSender=None):
         for client in self.clients:
             if(clientSender != self.usernames[self.clients.index(client)]):
-                client.send(Message.encode('ascii'))
+                client.send(Message.encode('utf-8'))
+            else:
                 print(clientSender + " ENVIANDO MENSAGEM PUBLICA")
-    
+
+                    
     def LoadMessages(self, client):
         while True:
             try:
                 print("ESPERANDO MENSAGENS")
-                getMsgFromClient = client.recv(2048).decode('ascii')
+                getMsgFromClient = client.recv(2048).decode('utf-8')
                 CurrentUsername = self.usernames[self.clients.index(client)]
                 self.Broadcast(f'> {self.usernames[self.clients.index(client)]} < {getMsgFromClient}',clientSender=CurrentUsername)
             except:
@@ -43,8 +45,8 @@ class Server:
             client, address = self.server.accept()
             print(f"== [NOVA CONEXÃO] ==\nENDEREÇO : {address}")
             self.clients.append(client)
-            client.send('GETUSER'.encode('ascii'))
-            username = client.recv(2048).decode('ascii')
+            client.send('GETUSER'.encode('utf-8'))
+            username = client.recv(2048).decode('utf-8')
             print("ESPERANDO USERNAME")
             self.usernames.append(username)
             print("NOVO USERNAME CADASTRADO "+username)

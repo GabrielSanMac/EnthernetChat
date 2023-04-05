@@ -31,9 +31,9 @@ class Client:
     def getMessage(self):
         while True:
             try:
-                Message = self.client.recv(2048).decode('ascii')
+                Message = self.client.recv(2048).decode('utf-8')
                 if Message == 'GETUSER':
-                    self.client.send(self.username.encode('ascii'))
+                    self.client.send(self.username.encode('utf-8'))
                 else:
                     print(Message)
             except:
@@ -43,7 +43,7 @@ class Client:
     def postMessage(self):
         while True:
             try:
-                Message = input("").encode('ascii')
+                Message = input("").encode('utf-8')
                 self.client.send(Message)
             except:
                 print("SUA MENSAGEM AINDA NÃO E ACEITA PELO SERVIDOR, TENTE NÃO USAR ACENTOS NO ENVIO.")
